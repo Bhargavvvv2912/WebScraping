@@ -6,8 +6,6 @@ from urllib.parse import urljoin
 import re
 import os
 
-# --- Core Scraping Functions ---
-# [ ... The full, unchanged scrape_school function and its helpers go here ... ]
 
 def navigate_to_master_table(session: requests.Session, day_of_month: int) -> BeautifulSoup:
     """Handles the complex navigation to the master school attendance list."""
@@ -115,7 +113,6 @@ if __name__ == "__main__":
         print(combined_df.tail())
         print(f"\nTotal records scraped from all schools and days: {len(combined_df)}")
         
-        # --- YOUR RESTORED AND IMPROVED LOGIC ---
         try:
             # Define the output folder and filename
             output_folder = "data"

@@ -1,13 +1,8 @@
-# Name of your GitHub Action workflow
+# Name of the GitHub Action workflow
 name: Daily Delhi School Attendance Scraper
 
-# This controls when the action will run.
 on:
-  # This line allows you to run the workflow manually from the GitHub Actions tab.
-  # This is very useful for testing.
   workflow_dispatch:
-
-  # This block defines the automated schedule.
   schedule:
     # cron format: minute hour day-of-month month day-of-week
     # '30 12 * * *' means it will run at 12:30 PM UTC every day.
@@ -19,11 +14,7 @@ jobs:
   scrape-and-commit:
     # A descriptive name for the job, which will appear in the Actions log.
     name: Scrape Data and Commit CSV
-
-    # Specifies the virtual machine to run the job on. 'ubuntu-latest' is a standard, reliable choice.
     runs-on: ubuntu-latest
-
-    # The sequence of individual steps that make up the job.
     steps:
       # Step 1: Checks out your repository's code onto the virtual machine.
       # This is necessary so the runner can access your Webscraping.py script.
@@ -35,31 +26,17 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.11' # Specifies the version of Python to use.
-
-      # Step 3: Installs the Python libraries required by your script.
-      # It reads the library names from your requirements.txt file.
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      
-      # Step 4: Executes your Python scraping script.
-      # All the print statements from your script will appear in the log for this step.
       - name: Run the web scraper
         run: python Webscraping.py
 
-      # Step 5: Automatically commits the new CSV file back to your repository.
-      # This action checks for any new or modified files and pushes them.
       - name: Commit and push new data
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          # The message that will be used for the automatic commit.
           commit_message: "Automated: Add latest attendance data"
-          
-          # The name and email to associate with the automated commit.
           commit_user_name: "GitHub Actions Bot"
           commit_user_email: "actions@github.com"
-          
-          # The path to the file(s) to add. This correctly points to any new
-          # CSV file inside the 'data' directory that your script creates.
           file_pattern: "data/*.csv"
